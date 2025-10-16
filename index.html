@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FitApp - O melhor aplicativo de academia com gamificação e treinos personalizados">
+    <title>FitApp - Transforme seu Treino</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+</head>
+<body class="dark-theme">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <span class="logo">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    <span class="logo-text">FitApp</span>
+                </span>
+            </div>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="#recursos" class="navbar-link">Recursos</a>
+                <a href="#planos" class="navbar-link">Planos</a>
+                <a href="#sobre" class="navbar-link">Sobre</a>
+                <a href="#contato" class="navbar-link">Contato</a>
+            </div>
+            
+            <div class="navbar-actions">
+                <a href="login.html" class="btn btn-ghost">Entrar</a>
+                <a href="register.html" class="btn btn-primary">Começar Grátis</a>
+            </div>
+            
+            <button class="navbar-burger" id="navbarBurger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-background"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title animate-fade-in-up">
+                        Transforme Seu <span class="text-gradient">Treino</span>
+                    </h1>
+                    <p class="hero-subtitle animate-fade-in-up delay-1">
+                        Gamificação, treinos personalizados e acompanhamento completo. 
+                        Tudo em um só lugar.
+                    </p>
+                    <div class="hero-cta animate-fade-in-up delay-2">
+                        <a href="register.html" class="btn btn-primary btn-lg">
+                            Começar Agora
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                        <a href="#recursos" class="btn btn-outline btn-lg">
+                            Saber Mais
+                        </a>
+                    </div>
+                    
+                    <div class="hero-stats animate-fade-in-up delay-3">
+                        <div class="stat">
+                            <span class="stat-number">1500+</span>
+                            <span class="stat-label">Usuários Ativos</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">10k+</span>
+                            <span class="stat-label">Treinos Realizados</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">98%</span>
+                            <span class="stat-label">Satisfação</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hero-image animate-fade-in-right">
+                    <div class="floating-card card-1">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                        <div>
+                            <p class="card-title">15 dias</p>
+                            <p class="card-subtitle">Sequência ativa</p>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-card card-2">
+                        <span class="material-symbols-outlined">emoji_events</span>
+                        <div>
+                            <p class="card-title">#3 no Ranking</p>
+                            <p class="card-subtitle">2100 foguinhos</p>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-mockup">
+                        <img src="assets/images/app-mockup.png" alt="FitApp Interface" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="recursos">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Recursos</span>
+                <h2 class="section-title">Tudo que você precisa em um só lugar</h2>
+                <p class="section-subtitle">
+                    Funcionalidades completas para transformar sua experiência na academia
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">local_fire_department</span>
+                    </div>
+                    <h3 class="feature-title">Sistema de Foguinhos</h3>
+                    <p class="feature-description">
+                        Ganhe pontos por frequência e suba no ranking. Mantenha sua sequência ativa!
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">fitness_center</span>
+                    </div>
+                    <h3 class="feature-title">Treinos Personalizados</h3>
+                    <p class="feature-description">
+                        Planos de treino adaptados ao seu nível e objetivos específicos.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">emoji_events</span>
+                    </div>
+                    <h3 class="feature-title">Ranking Global</h3>
+                    <p class="feature-description">
+                        Compete com outros alunos e veja sua evolução no ranking mundial.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">storefront</span>
+                    </div>
+                    <h3 class="feature-title">Loja Integrada</h3>
+                    <p class="feature-description">
+                        Compre suplementos e equipamentos direto no app com desconto.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">insights</span>
+                    </div>
+                    <h3 class="feature-title">Análise de Progresso</h3>
+                    <p class="feature-description">
+                        Acompanhe sua evolução com gráficos e estatísticas detalhadas.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <span class="material-symbols-outlined">groups</span>
+                    </div>
+                    <h3 class="feature-title">Comunidade Ativa</h3>
+                    <p class="feature-description">
+                        Conecte-se com outros atletas e compartilhe sua jornada fitness.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Como Funciona</span>
+                <h2 class="section-title">Simples de começar</h2>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Crie sua conta</h3>
+                        <p class="step-description">
+                            Cadastre-se em segundos usando email ou redes sociais
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Configure seu perfil</h3>
+                        <p class="step-description">
+                            Defina seus objetivos e preferências de treino
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Comece a treinar</h3>
+                        <p class="step-description">
+                            Marque presença, execute treinos e ganhe foguinhos!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="plans" id="planos">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Planos</span>
+                <h2 class="section-title">Escolha seu plano</h2>
+                <p class="section-subtitle">
+                    Planos flexíveis para todos os perfis
+                </p>
+            </div>
+            
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Básico</h3>
+                        <p class="plan-description">Para iniciantes</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">49</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Treinos básicos
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Sistema de foguinhos
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Ranking mensal
+                        </li>
+                        <li class="disabled">
+                            <span class="material-symbols-outlined">cancel</span>
+                            Treinos personalizados
+                        </li>
+                        <li class="disabled">
+                            <span class="material-symbols-outlined">cancel</span>
+                            Suporte prioritário
+                        </li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline btn-block">Começar</a>
+                </div>
+                
+                <div class="plan-card featured">
+                    <div class="plan-badge">Mais Popular</div>
+                    <div class="plan-header">
+                        <h3 class="plan-name">Premium</h3>
+                        <p class="plan-description">Para atletas dedicados</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">99</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Todos os treinos
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Sistema de foguinhos avançado
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Ranking global
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Treinos personalizados
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Suporte prioritário 24/7
+                        </li>
+                    </ul>
+                    <a href="register.html" class="btn btn-primary btn-block">Começar Agora</a>
+                </div>
+                
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3 class="plan-name">Elite</h3>
+                        <p class="plan-description">Performance máxima</p>
+                    </div>
+                    <div class="plan-price">
+                        <span class="price-currency">R$</span>
+                        <span class="price-amount">199</span>
+                        <span class="price-period">/mês</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Tudo do Premium +
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Personal trainer dedicado
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Plano nutricional
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Avaliação física mensal
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Acesso ilimitado à loja
+                        </li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline btn-block">Começar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Depoimentos</span>
+                <h2 class="section-title">O que nossos usuários dizem</h2>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">
+                        "O sistema de foguinhos me motivou a treinar todos os dias! 
+                        Já estou no nível 5 e não pretendo parar."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Sofia+Silva&background=38e07b&color=fff" alt="Sofia">
+                        <div>
+                            <p class="author-name">Sofia Silva</p>
+                            <p class="author-role">Membro há 6 meses</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">
+                        "Melhor app de academia que já usei. Os treinos personalizados 
+                        são perfeitos para meus objetivos!"
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Lucas+Santos&background=38e07b&color=fff" alt="Lucas">
+                        <div>
+                            <p class="author-name">Lucas Santos</p>
+                            <p class="author-role">Membro há 1 ano</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <p class="testimonial-text">
+                        "A comunidade é incrível! Sempre motivado pelos rankings 
+                        e pela competição saudável."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Isabella+Costa&background=38e07b&color=fff" alt="Isabella">
+                        <div>
+                            <p class="author-name">Isabella Costa</p>
+                            <p class="author-role">Membro há 3 meses</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Pronto para transformar seu treino?</h2>
+                <p class="cta-subtitle">
+                    Junte-se a mais de 1500 atletas que já estão alcançando seus objetivos
+                </p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn btn-primary btn-lg">
+                        Começar Grátis
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </a>
+                    <a href="#contato" class="btn btn-ghost btn-lg">
+                        Falar com Vendas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contato">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">
+                        <span class="logo">
+                            <span class="material-symbols-outlined">fitness_center</span>
+                            <span class="logo-text">FitApp</span>
+                        </span>
+                        <p class="footer-description">
+                            Transformando vidas através do fitness e tecnologia.
+                        </p>
+                        <div class="social-links">
+                            <a href="#" class="social-link">
+                                <span class="material-symbols-outlined">language</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <span class="material-symbols-outlined">mail</span>
+                            </a>
+                            <a href="#" class="social-link">
+                                <span class="material-symbols-outlined">phone</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Produto</h4>
+                    <ul class="footer-links">
+                        <li><a href="#recursos">Recursos</a></li>
+                        <li><a href="#planos">Planos</a></li>
+                        <li><a href="#">Downloads</a></li>
+                        <li><a href="#">API</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Empresa</h4>
+                    <ul class="footer-links">
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Imprensa</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Suporte</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 FitApp. Todos os direitos reservados.</p>
+                <div class="footer-legal">
+                    <a href="#">Termos de Uso</a>
+                    <a href="#">Privacidade</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const burger = document.getElementById('navbarBurger');
+        const menu = document.getElementById('navbarMenu');
+        
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
