@@ -1,0 +1,160 @@
+/* ========================================
+   RESPONSIVE.CSS - Adaptação PC/Mobile
+   ======================================== */
+
+/* Desktop Layout (PC View) */
+@media (min-width: 1024px) {
+    /* Sidebar Navigation for PC */
+    .sidebar-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        min-height: 100vh;
+    }
+    
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        background: var(--bg-secondary);
+        border-right: 1px solid var(--border-color);
+        padding: var(--spacing-lg);
+        overflow-y: auto;
+    }
+    
+    .main-content {
+        margin-left: 280px;
+        padding: var(--spacing-xl);
+    }
+    
+    /* Multi-column Cards */
+    .card-grid-desktop {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+    }
+    
+    /* Larger Hit Areas */
+    .btn-desktop {
+        min-width: 120px;
+        padding: 0.875rem 2rem;
+    }
+    
+    /* Hover States (Desktop Only) */
+    .desktop-hover:hover {
+        background: var(--bg-tertiary);
+        cursor: pointer;
+    }
+}
+
+/* Tablet Layout */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .card-grid-tablet {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    .navbar-menu {
+        gap: var(--spacing-md);
+    }
+}
+
+/* Mobile Layout */
+@media (max-width: 767px) {
+    /* Stack Everything */
+    .card-grid-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    /* Bottom Navigation */
+    .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        padding: var(--spacing-sm);
+        display: flex;
+        justify-content: space-around;
+        z-index: 1000;
+    }
+    
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem;
+        color: var(--text-tertiary);
+        font-size: var(--font-size-xs);
+        transition: var(--transition-fast);
+    }
+    
+    .bottom-nav-item.active {
+        color: var(--primary);
+    }
+    
+    .bottom-nav-item .material-symbols-outlined {
+        font-size: 1.5rem;
+    }
+    
+    /* Mobile Safe Area */
+    .mobile-safe-area {
+        padding-bottom: calc(60px + env(safe-area-inset-bottom));
+    }
+    
+    /* Touch-Friendly Sizes */
+    .touch-target {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Full-Width Buttons on Mobile */
+    .btn-mobile-full {
+        width: 100%;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 375px) {
+    :root {
+        --font-size-5xl: 2rem;
+        --font-size-4xl: 1.75rem;
+        --font-size-3xl: 1.5rem;
+    }
+    
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1920px) {
+    .container {
+        max-width: 1600px;
+    }
+    
+    .hero-title {
+        font-size: 4.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .footer,
+    .cta-section,
+    .btn {
+        display: none;
+    }
+    
+    * {
+        color: #000 !important;
+        background: #fff !important;
+    }
+}
