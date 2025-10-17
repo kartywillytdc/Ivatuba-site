@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Ranking</h1>
+                <p>Os melhores da academia</p>
+            </div>
+
+            <div class="ranking-podium">
+                <div class="podium-item second" id="second">
+                    <div class="podium-user">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="podium-medal">🥈</div>
+                    <h4>-</h4>
+                    <p>0 🔥</p>
+                </div>
+
+                <div class="podium-item first" id="first">
+                    <div class="podium-user">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="podium-medal">🥇</div>
+                    <h4>-</h4>
+                    <p>0 🔥</p>
+                </div>
+
+                <div class="podium-item third" id="third">
+                    <div class="podium-user">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="podium-medal">🥉</div>
+                    <h4>-</h4>
+                    <p>0 🔥</p>
+                </div>
+            </div>
+
+            <div class="ranking-list">
+                <h3>Classificação Completa</h3>
+                <div id="rankingList">
+                    <div class="loading">Carregando ranking...</div>
+                </div>
+            </div>
+
+            <div class="user-position card" id="userPosition" style="display: none;">
+                <h4>Sua Posição</h4>
+                <div class="ranking-item highlight">
+                    <span class="ranking-position" id="myPosition">-</span>
+                    <div class="ranking-avatar">
+                        <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="ranking-info">
+                        <h4 id="myName">Você</h4>
+                        <p>Level <span id="myLevel">1</span></p>
+                    </div>
+                    <span class="ranking-score" id="myScore">0 🔥</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getRanking, getUserData } from './js/database.js';
+
+        let currentUserId = null;
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            currentUserId = user.uid;
+            loadRanking();
+        });
+
+        async function loadRanking() {
+            const result = await getRanking();
+
+            if (result.success) {
+                const ranking = result.data;
+
+                // Pódio
+                if (ranking[0]) {
+                    document.querySelector('#first h4').textContent = ranking[0].name;
+                    document.querySelector('#first p').textContent = ranking[0].foguinhos + ' 🔥';
+                }
+                if (ranking[1]) {
+                    document.querySelector('#second h4').textContent = ranking[1].name;
+                    document.querySelector('#second p').textContent = ranking[1].foguinhos + ' 🔥';
+                }
+                if (ranking[2]) {
+                    document.querySelector('#third h4').textContent = ranking[2].name;
+                    document.querySelector('#third p').textContent = ranking[2].foguinhos + ' 🔥';
+                }
+
+                // Lista completa
+                const listContainer = document.getElementById('rankingList');
+                listContainer.innerHTML = ranking.map((user, index) => {
+                    const position = index + 1;
+                    const isCurrentUser = user.id === currentUserId;
+                    
+                    return `
+                        <div class="ranking-item ${isCurrentUser ? 'highlight' : ''}">
+                            <span class="ranking-position">${position}</span>
+                            <div class="ranking-avatar">
+                                <span class="material-symbols-outlined">person</span>
+                            </div>
+                            <div class="ranking-info">
+                                <h4>${user.name} ${isCurrentUser ? '(Você)' : ''}</h4>
+                                <p>Level ${user.level || 1}</p>
+                            </div>
+                            <span class="ranking-score">${user.foguinhos || 0} 🔥</span>
+                        </div>
+                    `;
+                }).join('');
+
+                // Posição do usuário
+                const userIndex = ranking.findIndex(u => u.id === currentUserId);
+                if (userIndex !== -1) {
+                    const userData = ranking[userIndex];
+                    document.getElementById('myPosition').textContent = userIndex + 1;
+                    document.getElementById('myName').textContent = userData.name;
+                    document.getElementById('myLevel').textContent = userData.level || 1;
+                    document.getElementById('myScore').textContent = userData.foguinhos || 0;
+                    document.getElementById('userPosition').style.display = 'block';
+                }
+            } else {
+                document.getElementById('rankingList').innerHTML = `
+                    <div class="empty-state">
+                        <span class="material-symbols-outlined">leaderboard</span>
+                        <h3>Nenhum dado disponível</h3>
+                        <p>O ranking será atualizado em breve</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
