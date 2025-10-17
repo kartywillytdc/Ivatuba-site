@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Produto - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Adicionar Produto</h1>
+            </div>
+
+            <form id="productForm" class="product-form">
+                <div class="form-group">
+                    <label>Nome do Produto</label>
+                    <input type="text" id="productName" placeholder="Ex: Whey Protein 1kg" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="productDescription" rows="4" placeholder="Descreva o produto..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="productCategory" required>
+                            <option value="">Selecione...</option>
+                            <option value="supplements">Suplementos</option>
+                            <option value="apparel">Roupas</option>
+                            <option value="accessories">Acessórios</option>
+                            <option value="equipment">Equipamentos</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foguinhos Necessários</label>
+                        <input type="number" id="productFoguinhos" placeholder="Ex: 500" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Estoque Disponível</label>
+                    <input type="number" id="productStock" placeholder="Ex: 50" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>URL da Imagem</label>
+                    <input type="url" id="productImage" placeholder="https://exemplo.com/imagem.jpg">
+                    <small>Insira a URL de uma imagem do produto</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productFeatured">
+                        <span>Produto em Destaque</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productActive" checked>
+                        <span>Produto Ativo (visível na loja)</span>
+                    </label>
+                </div>
+
+                <div class="product-preview card">
+                    <h3>Pré-visualização</h3>
+                    <div class="preview-product-card">
+                        <div class="preview-image">
+                            <img id="previewImage" src="assets/images/placeholder.png" alt="Preview">
+                        </div>
+                        <h4 id="previewName">Nome do Produto</h4>
+                        <p id="previewDescription">Descrição do produto...</p>
+                        <div class="preview-footer">
+                            <span class="preview-category" id="previewCategory">Categoria</span>
+                            <span class="preview-price" id="previewPrice">🔥 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-symbols-outlined">add</span>
+                        Adicionar Produto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData, addProduct } from './js/database.js';
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const result = await getUserData(user.uid);
+            if (!result.success || result.data.role !== 'admin') {
+                alert('Acesso negado! Apenas administradores.');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Preview em tempo real
+        document.getElementById('productName').addEventListener('input', (e) => {
+            document.getElementById('previewName').textContent = e.target.value || 'Nome do Produto';
+        });
+
+        document.getElementById('productDescription').addEventListener('input', (e) => {
+            document.getElementById('previewDescription').textContent = e.target.value || 'Descrição do produto...';
+        });
+
+        document.getElementById('productCategory').addEventListener('change', (e) => {
+            const categories = {
+                'supplements': 'Suplementos',
+                'apparel': 'Roupas',
+                'accessories': 'Acessórios',
+                'equipment': 'Equipamentos'
+            };
+            document.getElementById('previewCategory').textContent = categories[e.target.value] || 'Categoria';
+        });
+
+        document.getElementById('productFoguinhos').addEventListener('input', (e) => {
+            document.getElementById('previewPrice').textContent = `🔥 ${e.target.value || 0}`;
+        });
+
+        document.getElementById('productImage').addEventListener('input', (e) => {
+            const img = document.getElementById('previewImage');
+            img.src = e.target.value || 'assets/images/placeholder.png';
+            img.onerror = () => {
+                img.src = 'assets/images/placeholder.png';
+            };
+        });
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productData = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                category: document.getElementById('productCategory').value,
+                foguinhos: parseInt(document.getElementById('productFoguinhos').value),
+                stock: parseInt(document.getElementById('productStock').value),
+                image: document.getElementById('productImage').value || 'assets/images/placeholder.png',
+                featured: document.getElementById('productFeatured').checked,
+                active: document.getElementById('productActive').checked,
+                createdAt: new Date().toISOString()
+            };
+
+            const result = await addProduct(productData);
+
+            if (result.success) {
+                alert('Produto adicionado com sucesso!');
+                window.location.href = 'admin-panel.html';
+            } else {
+                alert('Erro ao adicionar produto: ' + result.error);
+            }
+        });
+    </script>
+</body>
+</html>
