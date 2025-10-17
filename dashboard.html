@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Olá, <span id="userName">Usuário</span>! 👋</h1>
+                    <p>Pronto para treinar hoje?</p>
+                </div>
+                <button class="btn btn-ghost" onclick="window.location.href='profile.html'">
+                    <span class="material-symbols-outlined">person</span>
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                    <div>
+                        <h3 id="userFoguinhos">0</h3>
+                        <p>Foguinhos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    <div>
+                        <h3 id="userLevel">1</h3>
+                        <p>Nível</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <div>
+                        <h3 id="userStreak">0</h3>
+                        <p>Sequência</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    <div>
+                        <h3 id="userWorkouts">0</h3>
+                        <p>Treinos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h2>Ações Rápidas</h2>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="window.location.href='workouts.html'">
+                        <span class="material-symbols-outlined">fitness_center</span>
+                        <h3>Treinos</h3>
+                    </div>
+
+                    <div class="action-card" onclick="window.location.href='store.html'">
+                        <span class="material-symbols-outlined">storefront</span>
+                        <h3>Loja</h3>
+                    </div>
+
+                    <div class="action-card" onclick="window.location.href='ranking.html'">
+                        <span class="material-symbols-outlined">emoji_events</span>
+                        <h3>Ranking</h3>
+                    </div>
+
+                    <div class="action-card" onclick="window.location.href='attendance.html'">
+                        <span class="material-symbols-outlined">how_to_reg</span>
+                        <h3>Presença</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item active">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData } from './js/database.js';
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('userName').textContent = user.displayName || 'Usuário';
+
+            const result = await getUserData(user.uid);
+            if (result.success) {
+                const data = result.data;
+                document.getElementById('userFoguinhos').textContent = data.foguinhos || 0;
+                document.getElementById('userLevel').textContent = data.level || 1;
+                document.getElementById('userStreak').textContent = data.streak || 0;
+                document.getElementById('userWorkouts').textContent = data.workoutsCompleted || 0;
+            }
+        });
+    </script>
+</body>
+</html>
