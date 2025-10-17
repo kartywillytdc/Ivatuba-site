@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - FitApp</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container" style="padding: var(--spacing-xl) var(--spacing-md);">
+            
+            <!-- Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-xl);">
+                <div>
+                    <h1 style="font-size: var(--font-size-3xl); margin-bottom: 0.5rem;">Painel Admin</h1>
+                    <p style="color: var(--text-secondary);">Gerenciar sistema</p>
+                </div>
+                <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                <div class="card" style="padding: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: 0.5rem;">
+                                Usuários Ativos
+                            </p>
+                            <h3 style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--primary);" id="totalUsers">
+                                0
+                            </h3>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 1.5rem;">group</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: 0.5rem;">
+                                Produtos
+                            </p>
+                            <h3 style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--primary);" id="totalProducts">
+                                0
+                            </h3>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 1.5rem;">storefront</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: 0.5rem;">
+                                Treinos
+                            </p>
+                            <h3 style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--primary);" id="totalWorkouts">
+                                0
+                            </h3>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                            <span class="material-symbols-outlined" style="color: var(--primary); font-size: 1.5rem;">fitness_center</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <p style="color: var(--text-secondary); font-size: var(--font-size-sm); margin-bottom: 0.5rem;">
+                                Foguinhos Totais
+                            </p>
+                            <h3 style="font-size: var(--font-size-3xl); font-weight: 700; color: var(--primary);" id="totalFoguinhos">
+                                0
+                            </h3>
+                        </div>
+                        <div style="width: 48px; height: 48px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 1.5rem;">🔥</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-xl);">
+                
+                <!-- Users -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='admin-users.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span class="material-symbols-outlined" style="color: var(--primary); font-size: 2rem;">group</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Gerenciar Usuários</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Adicionar, editar e remover usuários
+                    </p>
+                </div>
+
+                <!-- Products -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='add-product.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span class="material-symbols-outlined" style="color: var(--primary); font-size: 2rem;">storefront</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Gerenciar Produtos</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Adicionar e editar produtos da loja
+                    </p>
+                </div>
+
+                <!-- Workouts -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='admin-workouts.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span class="material-symbols-outlined" style="color: var(--primary); font-size: 2rem;">fitness_center</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Gerenciar Treinos</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Criar e editar planos de treino
+                    </p>
+                </div>
+
+                <!-- Foguinhos -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='admin-foguinhos.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span style="font-size: 2rem;">🔥</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Controlar Foguinhos</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Ajustar valores e regras de pontuação
+                    </p>
+                </div>
+
+                <!-- Promotions -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='promocao.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span class="material-symbols-outlined" style="color: var(--primary); font-size: 2rem;">campaign</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Criar Promoção</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Gerenciar mega ofertas e descontos
+                    </p>
+                </div>
+
+                <!-- Settings -->
+                <div class="card hover-lift" style="padding: var(--spacing-xl); cursor: pointer;" onclick="window.location.href='settings.html'">
+                    <div style="width: 64px; height: 64px; background: rgba(56, 224, 123, 0.1); border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-md);">
+                        <span class="material-symbols-outlined" style="color: var(--primary); font-size: 2rem;">settings</span>
+                    </div>
+                    <h3 style="font-size: var(--font-size-xl); margin-bottom: 0.5rem;">Configurações Gerais</h3>
+                    <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">
+                        Ajustes gerais do sistema
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card" style="padding: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+                <h3 style="margin-bottom: var(--spacing-lg); font-size: var(--font-size-xl);">
+                    Atividade Recente
+                </h3>
+                <div id="recentActivity" style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                    <p style="color: var(--text-secondary); text-align: center; padding: var(--spacing-lg);">
+                        Carregando atividades...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dangerous Actions -->
+            <div class="card" style="padding: var(--spacing-xl); border: 2px solid #ff3b30;">
+                <h3 style="margin-bottom: var(--spacing-lg); font-size: var(--font-size-xl); color: #ff3b30;">
+                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 0.5rem;">warning</span>
+                    Ações Perigosas
+                </h3>
+                
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                    <button class="btn btn-outline" style="border-color: #ff9500; color: #ff9500;" onclick="resetFoguinhos()">
+                        Resetar Todos os Foguinhos
+                    </button>
+                    
+                    <button class="btn btn-outline" style="border-color: #ff3b30; color: #ff3b30;" onclick="clearDatabase()">
+                        Limpar Banco de Dados
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData, getAllUsers, getAllProducts, getAllWorkouts } from './js/database.js';
+        
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Verificar se é admin
+            const result = await getUserData(user.uid);
+            if (!result.success || result.data.role !== 'admin') {
+                alert('Acesso negado! Apenas administradores.');
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            // Carregar estatísticas
+            loadStats();
+            loadRecentActivity();
+        });
+
+        async function loadStats() {
+            try {
+                // Carregar usuários
+                const usersResult = await getAllUsers();
+                if (usersResult.success) {
+                    document.getElementById('totalUsers').textContent = usersResult.data.length;
+                    
+                    // Calcular total de foguinhos
+                    const totalFoguinhos = usersResult.data.reduce((sum, user) => {
+                        return sum + (user.foguinhos || 0);
+                    }, 0);
+                    document.getElementById('totalFoguinhos').textContent = formatNumber(totalFoguinhos);
+                }
+
+                // Carregar produtos
+                const productsResult = await getAllProducts();
+                if (productsResult.success) {
+                    document.getElementById('totalProducts').textContent = productsResult.data.length;
+                }
+
+                // Carregar treinos
+                const workoutsResult = await getAllWorkouts();
+                if (workoutsResult.success) {
+                    document.getElementById('totalWorkouts').textContent = workoutsResult.data.length;
+                }
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
+
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'K';
+            }
+            return num.toString();
+        }
+
+        async function loadRecentActivity() {
+            const container = document.getElementById('recentActivity');
+            
+            // Simulação de atividades recentes
+            const activities = [
+                { icon: 'person_add', text: 'Novo usuário cadastrado', time: '5 min atrás', color: 'var(--primary)' },
+                { icon: 'shopping_cart', text: 'Produto adicionado à loja', time: '1 hora atrás', color: '#ff9500' },
+                { icon: 'fitness_center', text: 'Novo treino criado', time: '2 horas atrás', color: '#38e07b' },
+                { icon: 'local_fire_department', text: 'Usuário resgatou recompensa', time: '3 horas atrás', color: '#ff3b30' },
+                { icon: 'campaign', text: 'Promoção ativada', time: '5 horas atrás', color: '#007aff' }
+            ];
+
+            container.innerHTML = activities.map(activity => `
+                <div style="display: flex; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--border-radius);">
+                    <div style="width: 40px; height: 40px; background: ${activity.color}15; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <span class="material-symbols-outlined" style="color: ${activity.color}; font-size: 1.25rem;">${activity.icon}</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <p style="margin: 0; font-weight: 500;">${activity.text}</p>
+                        <p style="margin: 0; font-size: var(--font-size-sm); color: var(--text-secondary);">${activity.time}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.resetFoguinhos = async function() {
+            if (confirm('ATENÇÃO: Isso irá resetar TODOS os foguinhos de TODOS os usuários para 0! Continuar?')) {
+                if (confirm('Tem ABSOLUTA certeza? Esta ação não pode ser desfeita!')) {
+                    try {
+                        const usersResult = await getAllUsers();
+                        if (!usersResult.success) {
+                            alert('Erro ao obter usuários');
+                            return;
+                        }
+
+                        // Resetar foguinhos de todos os usuários
+                        for (const user of usersResult.data) {
+                            await updateUserData(user.id, { foguinhos: 0 });
+                        }
+
+                        alert('Todos os foguinhos foram resetados com sucesso!');
+                        loadStats();
+                    } catch (error) {
+                        console.error('Erro ao resetar foguinhos:', error);
+                        alert('Erro ao resetar foguinhos');
+                    }
+                }
+            }
+        }
+
+        window.clearDatabase = function() {
+            alert('⚠️ Esta funcionalidade está desabilitada por segurança.\n\nPara limpar o banco de dados, use o console do Firebase diretamente.');
+        }
+    </script>
+</body>
+</html>
