@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Plano - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Meu Plano</h1>
+            </div>
+
+            <div class="plan-card card">
+                <div class="plan-badge">Ativo</div>
+                <h2>Plano Premium</h2>
+                <p class="plan-price">R$ 89,90/mês</p>
+                <p class="plan-description">Acesso completo a todos os recursos da academia</p>
+                
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Acesso ilimitado à academia</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Todos os treinos personalizados</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Acompanhamento nutricional</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Avaliação física mensal</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        <span>Sistema de recompensas</span>
+                    </div>
+                </div>
+
+                <div class="plan-validity">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <div>
+                        <h4>Próximo Vencimento</h4>
+                        <p id="nextPayment">15 de Novembro, 2025</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plan-actions">
+                <button class="btn btn-outline btn-block">
+                    <span class="material-symbols-outlined">receipt</span>
+                    Ver Histórico de Pagamentos
+                </button>
+
+                <button class="btn btn-outline btn-block">
+                    <span class="material-symbols-outlined">credit_card</span>
+                    Atualizar Forma de Pagamento
+                </button>
+
+                <button class="btn btn-outline btn-block" style="color: #ff9500; border-color: #ff9500;">
+                    <span class="material-symbols-outlined">sync</span>
+                    Mudar Plano
+                </button>
+            </div>
+
+            <div class="plan-info card">
+                <h3>Benefícios Extras</h3>
+                <ul>
+                    <li>Desconto de 10% na loja de suplementos</li>
+                    <li>Acesso prioritário a eventos especiais</li>
+                    <li>Bônus de 50 foguinhos mensais</li>
+                    <li>Suporte prioritário</li>
+                </ul>
+            </div>
+
+            <div class="danger-zone">
+                <h3>Zona de Perigo</h3>
+                <button class="btn btn-outline btn-block" style="color: #ff3b30; border-color: #ff3b30;" onclick="cancelPlan()">
+                    <span class="material-symbols-outlined">cancel</span>
+                    Cancelar Plano
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function cancelPlan() {
+            if (confirm('Tem certeza que deseja cancelar seu plano?\n\nVocê perderá acesso a todos os benefícios.')) {
+                alert('Para cancelar seu plano, entre em contato com a recepção.');
+            }
+        }
+    </script>
+</body>
+</html>
