@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="store-header">
+                <div>
+                    <h1>Loja de Recompensas</h1>
+                    <p>Troque seus foguinhos por prêmios</p>
+                </div>
+                <div class="user-foguinhos">
+                    <span>🔥</span>
+                    <span id="userFoguinhos">0</span>
+                </div>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-category="all">Todos</button>
+                <button class="filter-btn" data-category="supplements">Suplementos</button>
+                <button class="filter-btn" data-category="apparel">Roupas</button>
+                <button class="filter-btn" data-category="accessories">Acessórios</button>
+            </div>
+
+            <div id="productsList" class="products-grid">
+                <div class="loading">Carregando produtos...</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item active">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData, getAllProducts, updateUserData } from './js/database.js';
+
+        let currentUser = null;
+        let userFoguinhos = 0;
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            currentUser = user;
+            const userData = await getUserData(user.uid);
+            if (userData.success) {
+                userFoguinhos = userData.data.foguinhos || 0;
+                document.getElementById('userFoguinhos').textContent = userFoguinhos;
+            }
+
+            loadProducts();
+        });
+
+        async function loadProducts() {
+            const container = document.getElementById('productsList');
+            const result = await getAllProducts();
+
+            if (result.success && result.data.length > 0) {
+                container.innerHTML = result.data.map(product => `
+                    <div class="product-card card hover-lift" data-category="${product.category}">
+                        <div class="product-image">
+                            <img src="${product.image || 'assets/images/placeholder.png'}" alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                            <div class="product-footer">
+                                <span class="product-price">🔥 ${product.foguinhos}</span>
+                                <button class="btn btn-primary btn-sm" onclick="redeemProduct('${product.id}', ${product.foguinhos}, '${product.name}')">
+                                    Resgatar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="material-symbols-outlined">storefront</span>
+                        <h3>Nenhum produto disponível</h3>
+                        <p>Novos produtos em breve!</p>
+                    </div>
+                `;
+            }
+
+            setupFilters();
+        }
+
+        window.redeemProduct = async function(productId, cost, name) {
+            if (userFoguinhos < cost) {
+                alert('Foguinhos insuficientes! Você precisa de mais ' + (cost - userFoguinhos) + ' 🔥');
+                return;
+            }
+
+            if (confirm(`Resgatar ${name} por ${cost} foguinhos?`)) {
+                const newBalance = userFoguinhos - cost;
+                const result = await updateUserData(currentUser.uid, {
+                    foguinhos: newBalance
+                });
+
+                if (result.success) {
+                    alert('Produto resgatado com sucesso! Entre em contato com a recepção.');
+                    userFoguinhos = newBalance;
+                    document.getElementById('userFoguinhos').textContent = userFoguinhos;
+                } else {
+                    alert('Erro ao resgatar produto. Tente novamente.');
+                }
+            }
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const products = document.querySelectorAll('.product-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const category = btn.dataset.category;
+
+                    products.forEach(product => {
+                        if (category === 'all' || product.dataset.category === category) {
+                            product.style.display = 'block';
+                        } else {
+                            product.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
