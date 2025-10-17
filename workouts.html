@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinos - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Meus Treinos</h1>
+                <p>Escolha seu treino do dia</p>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="beginner">Iniciante</button>
+                <button class="filter-btn" data-filter="intermediate">Intermediário</button>
+                <button class="filter-btn" data-filter="advanced">Avançado</button>
+            </div>
+
+            <div id="workoutsList" class="workouts-grid">
+                <div class="loading">Carregando treinos...</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item active">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getAllWorkouts } from './js/database.js';
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadWorkouts();
+        });
+
+        async function loadWorkouts() {
+            const container = document.getElementById('workoutsList');
+            const result = await getAllWorkouts();
+
+            if (result.success && result.data.length > 0) {
+                container.innerHTML = result.data.map(workout => `
+                    <div class="workout-card card hover-lift" data-level="${workout.level}" onclick="window.location.href='workout-execution.html?id=${workout.id}'">
+                        <div class="workout-icon">
+                            <span class="material-symbols-outlined">${workout.icon || 'fitness_center'}</span>
+                        </div>
+                        <h3>${workout.name}</h3>
+                        <p>${workout.description}</p>
+                        <div class="workout-meta">
+                            <span><span class="material-symbols-outlined">schedule</span> ${workout.duration || 30} min</span>
+                            <span><span class="material-symbols-outlined">fitness_center</span> ${workout.exercises || 8} exercícios</span>
+                        </div>
+                        <div class="workout-footer">
+                            <span class="workout-level">${getLevelText(workout.level)}</span>
+                            <span class="workout-reward">+${workout.foguinhos || 50} 🔥</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <span class="material-symbols-outlined">fitness_center</span>
+                        <h3>Nenhum treino disponível</h3>
+                        <p>Novos treinos em breve!</p>
+                    </div>
+                `;
+            }
+
+            setupFilters();
+        }
+
+        function getLevelText(level) {
+            const levels = {
+                'beginner': 'Iniciante',
+                'intermediate': 'Intermediário',
+                'advanced': 'Avançado'
+            };
+            return levels[level] || 'Todos os níveis';
+        }
+
+        function setupFilters() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const workouts = document.querySelectorAll('.workout-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filter = btn.dataset.filter;
+
+                    workouts.forEach(workout => {
+                        if (filter === 'all' || workout.dataset.level === filter) {
+                            workout.style.display = 'block';
+                        } else {
+                            workout.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
