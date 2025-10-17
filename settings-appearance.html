@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aparência - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Aparência</h1>
+            </div>
+
+            <div class="theme-preview card">
+                <h3>Pré-visualização</h3>
+                <div class="preview-content">
+                    <div class="preview-card">
+                        <h4>Cartão de Exemplo</h4>
+                        <p>Este é um exemplo de como ficará o tema</p>
+                        <button class="btn btn-primary btn-sm">Botão Primário</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="theme-options">
+                <h3>Escolher Tema</h3>
+                
+                <div class="theme-option" onclick="setTheme('dark')">
+                    <div class="theme-icon dark">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </div>
+                    <div class="theme-info">
+                        <h4>Escuro</h4>
+                        <p>Tema padrão escuro</p>
+                    </div>
+                    <input type="radio" name="theme" value="dark" id="theme-dark" checked>
+                </div>
+
+                <div class="theme-option" onclick="setTheme('light')">
+                    <div class="theme-icon light">
+                        <span class="material-symbols-outlined">light_mode</span>
+                    </div>
+                    <div class="theme-info">
+                        <h4>Claro</h4>
+                        <p>Tema claro para ambientes iluminados</p>
+                    </div>
+                    <input type="radio" name="theme" value="light" id="theme-light">
+                </div>
+
+                <div class="theme-option" onclick="setTheme('auto')">
+                    <div class="theme-icon auto">
+                        <span class="material-symbols-outlined">brightness_auto</span>
+                    </div>
+                    <div class="theme-info">
+                        <h4>Automático</h4>
+                        <p>Segue o tema do sistema</p>
+                    </div>
+                    <input type="radio" name="theme" value="auto" id="theme-auto">
+                </div>
+            </div>
+
+            <div class="color-accent">
+                <h3>Cor de Destaque</h3>
+                <div class="color-grid">
+                    <div class="color-option" style="background: #38e07b;" onclick="setAccentColor('#38e07b')">
+                        <span class="color-check">✓</span>
+                    </div>
+                    <div class="color-option" style="background: #007aff;" onclick="setAccentColor('#007aff')">
+                        <span class="color-check">✓</span>
+                    </div>
+                    <div class="color-option" style="background: #ff3b30;" onclick="setAccentColor('#ff3b30')">
+                        <span class="color-check">✓</span>
+                    </div>
+                    <div class="color-option" style="background: #ff9500;" onclick="setAccentColor('#ff9500')">
+                        <span class="color-check">✓</span>
+                    </div>
+                    <div class="color-option" style="background: #af52de;" onclick="setAccentColor('#af52de')">
+                        <span class="color-check">✓</span>
+                    </div>
+                    <div class="color-option" style="background: #ff2d55;" onclick="setAccentColor('#ff2d55')">
+                        <span class="color-check">✓</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carregar tema salvo
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.getElementById('theme-' + savedTheme).checked = true;
+        document.body.className = savedTheme === 'light' ? 'light-theme' : 'dark-theme';
+
+        function setTheme(theme) {
+            document.getElementById('theme-' + theme).checked = true;
+            localStorage.setItem('theme', theme);
+
+            if (theme === 'auto') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.className = prefersDark ? 'dark-theme' : 'light-theme';
+            } else {
+                document.body.className = theme === 'light' ? 'light-theme' : 'dark-theme';
+            }
+        }
+
+        function setAccentColor(color) {
+            document.documentElement.style.setProperty('--primary', color);
+            localStorage.setItem('accentColor', color);
+
+            // Remover check de todos
+            document.querySelectorAll('.color-check').forEach(check => {
+                check.style.display = 'none';
+            });
+
+            // Adicionar check no selecionado
+            event.target.querySelector('.color-check').style.display = 'block';
+        }
+
+        // Carregar cor salva
+        const savedColor = localStorage.getItem('accentColor');
+        if (savedColor) {
+            document.documentElement.style.setProperty('--primary', savedColor);
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.style.background === savedColor) {
+                    option.querySelector('.color-check').style.display = 'block';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
