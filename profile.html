@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="profile-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Meu Perfil</h1>
+                <button class="btn btn-ghost" onclick="window.location.href='settings.html'">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+            </div>
+
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+                <h2 id="profileName">Carregando...</h2>
+                <p id="profileEmail">email@exemplo.com</p>
+            </div>
+
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                    <div>
+                        <h3 id="profileFoguinhos">0</h3>
+                        <p>Foguinhos</p>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                    <div>
+                        <h3 id="profileLevel">1</h3>
+                        <p>Nível</p>
+                    </div>
+                </div>
+
+                <div class="stat-item">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                    <div>
+                        <h3 id="profileWorkouts">0</h3>
+                        <p>Treinos</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-menu">
+                <div class="menu-item" onclick="window.location.href='my-plan.html'">
+                    <span class="material-symbols-outlined">description</span>
+                    <span>Meu Plano</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </div>
+
+                <div class="menu-item" onclick="window.location.href='settings.html'">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Configurações</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </div>
+
+                <div class="menu-item" id="adminBtn" style="display: none;" onclick="window.location.href='admin-panel.html'">
+                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                    <span>Painel Admin</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </div>
+
+                <div class="menu-item" onclick="logout()" style="color: #ff3b30;">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Sair</span>
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item active">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth, logoutUser } from './js/auth.js';
+        import { getUserData } from './js/database.js';
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('profileName').textContent = user.displayName || 'Usuário';
+            document.getElementById('profileEmail').textContent = user.email;
+
+            const result = await getUserData(user.uid);
+            if (result.success) {
+                const data = result.data;
+                document.getElementById('profileFoguinhos').textContent = data.foguinhos || 0;
+                document.getElementById('profileLevel').textContent = data.level || 1;
+                document.getElementById('profileWorkouts').textContent = data.workoutsCompleted || 0;
+
+                if (data.role === 'admin') {
+                    document.getElementById('adminBtn').style.display = 'flex';
+                }
+            }
+        });
+
+        window.logout = async function() {
+            if (confirm('Deseja realmente sair?')) {
+                await logoutUser();
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+</html>
