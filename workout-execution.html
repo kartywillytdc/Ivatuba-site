@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executando Treino - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="workout-execution-header">
+                <button class="btn btn-ghost" onclick="confirmExit()">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                <h2 id="workoutName">Carregando...</h2>
+                <div class="workout-timer">
+                    <span class="material-symbols-outlined">schedule</span>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+
+            <div class="workout-progress">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <p><span id="currentExercise">0</span> de <span id="totalExercises">0</span> exercícios</p>
+            </div>
+
+            <div id="exerciseCard" class="exercise-card card">
+                <div class="exercise-image">
+                    <span class="material-symbols-outlined">fitness_center</span>
+                </div>
+                <h2 id="exerciseName">Carregando exercício...</h2>
+                <p id="exerciseDescription">Preparando seu treino...</p>
+                
+                <div class="exercise-details">
+                    <div class="detail-item">
+                        <span class="material-symbols-outlined">repeat</span>
+                        <span id="exerciseSets">0 séries</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="material-symbols-outlined">fitness_center</span>
+                        <span id="exerciseReps">0 reps</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="material-symbols-outlined">timer</span>
+                        <span id="exerciseRest">0s descanso</span>
+                    </div>
+                </div>
+
+                <div class="exercise-actions">
+                    <button class="btn btn-outline" onclick="previousExercise()">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Anterior
+                    </button>
+                    <button class="btn btn-primary" onclick="nextExercise()">
+                        Próximo
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="completionCard" class="completion-card card" style="display: none;">
+                <div class="completion-icon">
+                    <span class="material-symbols-outlined">emoji_events</span>
+                </div>
+                <h2>Treino Concluído! 🎉</h2>
+                <p>Parabéns! Você ganhou:</p>
+                <div class="reward">
+                    <span class="reward-amount" id="rewardAmount">+50</span>
+                    <span class="reward-icon">🔥</span>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="finishWorkout()">
+                    Finalizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData, updateUserData } from './js/database.js';
+
+        let currentExerciseIndex = 0;
+        let exercises = [];
+        let startTime = Date.now();
+        let timerInterval;
+
+        const sampleExercises = [
+            { name: 'Supino Reto', description: 'Deite-se no banco e empurre a barra para cima', sets: 4, reps: 12, rest: 60 },
+            { name: 'Agachamento Livre', description: 'Desça mantendo a coluna reta', sets: 4, reps: 15, rest: 90 },
+            { name: 'Remada Curvada', description: 'Puxe a barra em direção ao abdômen', sets: 4, reps: 12, rest: 60 },
+            { name: 'Desenvolvimento', description: 'Empurre os halteres acima da cabeça', sets: 3, reps: 12, rest: 60 },
+            { name: 'Rosca Direta', description: 'Flexione os cotovelos trazendo a barra', sets: 3, reps: 15, rest: 45 },
+            { name: 'Tríceps Testa', description: 'Estenda os cotovelos', sets: 3, reps: 15, rest: 45 },
+            { name: 'Prancha', description: 'Mantenha o corpo reto', sets: 3, reps: '60s', rest: 30 },
+            { name: 'Abdominal', description: 'Contraia o abdômen', sets: 3, reps: 20, rest: 30 }
+        ];
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const workoutId = urlParams.get('id');
+
+            exercises = sampleExercises;
+            document.getElementById('totalExercises').textContent = exercises.length;
+            document.getElementById('workoutName').textContent = 'Treino Completo';
+            
+            loadExercise();
+            startTimer();
+        });
+
+        function loadExercise() {
+            if (currentExerciseIndex >= exercises.length) {
+                showCompletion();
+                return;
+            }
+
+            const exercise = exercises[currentExerciseIndex];
+            document.getElementById('exerciseName').textContent = exercise.name;
+            document.getElementById('exerciseDescription').textContent = exercise.description;
+            document.getElementById('exerciseSets').textContent = exercise.sets + ' séries';
+            document.getElementById('exerciseReps').textContent = exercise.reps + (typeof exercise.reps === 'number' ? ' reps' : '');
+            document.getElementById('exerciseRest').textContent = exercise.rest + 's descanso';
+            document.getElementById('currentExercise').textContent = currentExerciseIndex + 1;
+
+            const progress = ((currentExerciseIndex + 1) / exercises.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timer').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        window.previousExercise = function() {
+            if (currentExerciseIndex > 0) {
+                currentExerciseIndex--;
+                loadExercise();
+            }
+        }
+
+        window.nextExercise = function() {
+            currentExerciseIndex++;
+            loadExercise();
+        }
+
+        function showCompletion() {
+            clearInterval(timerInterval);
+            document.getElementById('exerciseCard').style.display = 'none';
+            document.getElementById('completionCard').style.display = 'block';
+            document.getElementById('rewardAmount').textContent = '+50';
+        }
+
+        window.finishWorkout = async function() {
+            const user = await getCurrentUser();
+            if (user) {
+                const userData = await getUserData(user.uid);
+                if (userData.success) {
+                    await updateUserData(user.uid, {
+                        foguinhos: (userData.data.foguinhos || 0) + 50,
+                        workoutsCompleted: (userData.data.workoutsCompleted || 0) + 1
+                    });
+                }
+            }
+            window.location.href = 'dashboard.html';
+        }
+
+        window.confirmExit = function() {
+            if (confirm('Deseja realmente sair do treino? Seu progresso não será salvo.')) {
+                window.location.href = 'workouts.html';
+            }
+        }
+
+        async function getCurrentUser() {
+            return new Promise((resolve) => {
+                import('./js/auth.js').then(({ checkAuth }) => {
+                    checkAuth(resolve);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
