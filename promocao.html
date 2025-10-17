@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Promoção - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Criar Promoção</h1>
+            </div>
+
+            <form id="promoForm" class="promo-form">
+                <div class="form-group">
+                    <label>Título da Promoção</label>
+                    <input type="text" id="promoTitle" placeholder="Ex: Mega Oferta de Novembro" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="promoDescription" rows="4" placeholder="Descreva os detalhes da promoção..." required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="date" id="promoStartDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Término</label>
+                        <input type="date" id="promoEndDate" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo de Desconto</label>
+                    <select id="promoType" onchange="updateDiscountField()">
+                        <option value="percentage">Porcentagem (%)</option>
+                        <option value="fixed">Valor Fixo (R$)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label id="discountLabel">Desconto (%)</label>
+                    <input type="number" id="promoDiscount" placeholder="Ex: 20" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Código da Promoção (opcional)</label>
+                    <input type="text" id="promoCode" placeholder="Ex:FIT2025" style="text-transform: uppercase;">
+                </div>
+
+                <div class="form-group">
+                    <label>Produtos Aplicáveis</label>
+                    <select id="promoProducts" multiple>
+                        <option value="all">Todos os Produtos</option>
+                        <option value="supplements">Suplementos</option>
+                        <option value="apparel">Roupas</option>
+                        <option value="accessories">Acessórios</option>
+                    </select>
+                    <small>Segure Ctrl/Cmd para selecionar múltiplos</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="promoActive" checked>
+                        <span>Ativar promoção imediatamente</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="promoNotify">
+                        <span>Notificar todos os usuários</span>
+                    </label>
+                </div>
+
+                <div class="promo-preview card">
+                    <h3>Pré-visualização</h3>
+                    <div class="preview-content">
+                        <div class="promo-badge">PROMOÇÃO</div>
+                        <h4 id="previewTitle">Título da Promoção</h4>
+                        <p id="previewDescription">Descrição aparecerá aqui...</p>
+                        <div class="promo-discount" id="previewDiscount">0% OFF</div>
+                        <p class="promo-validity">Válido de <span id="previewDates">-- a --</span></p>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-symbols-outlined">campaign</span>
+                        Criar Promoção
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData } from './js/database.js';
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const result = await getUserData(user.uid);
+            if (!result.success || result.data.role !== 'admin') {
+                alert('Acesso negado! Apenas administradores.');
+                window.location.href = 'dashboard.html';
+            }
+        });
+
+        // Preview em tempo real
+        document.getElementById('promoTitle').addEventListener('input', (e) => {
+            document.getElementById('previewTitle').textContent = e.target.value || 'Título da Promoção';
+        });
+
+        document.getElementById('promoDescription').addEventListener('input', (e) => {
+            document.getElementById('previewDescription').textContent = e.target.value || 'Descrição aparecerá aqui...';
+        });
+
+        document.getElementById('promoDiscount').addEventListener('input', (e) => {
+            const type = document.getElementById('promoType').value;
+            const value = e.target.value || '0';
+            document.getElementById('previewDiscount').textContent = 
+                type === 'percentage' ? `${value}% OFF` : `R$ ${value} OFF`;
+        });
+
+        document.getElementById('promoStartDate').addEventListener('change', updateDates);
+        document.getElementById('promoEndDate').addEventListener('change', updateDates);
+
+        function updateDates() {
+            const start = document.getElementById('promoStartDate').value;
+            const end = document.getElementById('promoEndDate').value;
+            
+            if (start && end) {
+                const startDate = new Date(start).toLocaleDateString('pt-BR');
+                const endDate = new Date(end).toLocaleDateString('pt-BR');
+                document.getElementById('previewDates').textContent = `${startDate} a ${endDate}`;
+            }
+        }
+
+        window.updateDiscountField = function() {
+            const type = document.getElementById('promoType').value;
+            const label = document.getElementById('discountLabel');
+            const input = document.getElementById('promoDiscount');
+            
+            if (type === 'percentage') {
+                label.textContent = 'Desconto (%)';
+                input.placeholder = 'Ex: 20';
+                input.max = '100';
+            } else {
+                label.textContent = 'Desconto (R$)';
+                input.placeholder = 'Ex: 50.00';
+                input.max = '';
+            }
+        }
+
+        document.getElementById('promoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const promoData = {
+                title: document.getElementById('promoTitle').value,
+                description: document.getElementById('promoDescription').value,
+                startDate: document.getElementById('promoStartDate').value,
+                endDate: document.getElementById('promoEndDate').value,
+                type: document.getElementById('promoType').value,
+                discount: document.getElementById('promoDiscount').value,
+                code: document.getElementById('promoCode').value.toUpperCase(),
+                products: Array.from(document.getElementById('promoProducts').selectedOptions).map(o => o.value),
+                active: document.getElementById('promoActive').checked,
+                notify: document.getElementById('promoNotify').checked,
+                createdAt: new Date().toISOString()
+            };
+
+            console.log('Promoção criada:', promoData);
+            alert('Promoção criada com sucesso!');
+            window.location.href = 'admin-panel.html';
+        });
+    </script>
+</body>
+</html>
