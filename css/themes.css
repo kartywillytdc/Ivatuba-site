@@ -1,0 +1,70 @@
+/* ========================================
+   THEMES.CSS - Temas Personalizados
+   ======================================== */
+
+/* Light Theme */
+.light-theme {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f6f8f7;
+    --bg-tertiary: #e8f5ee;
+    
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-tertiary: #8e8e93;
+    
+    --border-color: #e0e0e0;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+}
+
+/* Dark Theme (Default) */
+.dark-theme {
+    --bg-primary: #0a0f0d;
+    --bg-secondary: #122017;
+    --bg-tertiary: #1a2d21;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --text-tertiary: #96c5a9;
+    
+    --border-color: #2a3f32;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Blue Theme */
+.blue-theme {
+    --primary: #007AFF;
+    --primary-dark: #0051D5;
+    --primary-light: #3395FF;
+}
+
+/* Orange Theme */
+.orange-theme {
+    --primary: #FF7A00;
+    --primary-dark: #E56B00;
+    --primary-light: #FF9533;
+}
+
+/* Purple Theme */
+.purple-theme {
+    --primary: #5D5FEF;
+    --primary-dark: #4345CC;
+    --primary-light: #7E80F2;
+}
+
+/* Pink Theme */
+.pink-theme {
+    --primary: #FF2D55;
+    --primary-dark: #E6194B;
+    --primary-light: #FF5C7A;
+}
+
+/* Theme Switcher Animation */
+.theme-transition {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
