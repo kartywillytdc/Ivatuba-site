@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presença - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <div>
+                    <h1>Marcar Presença</h1>
+                    <p id="currentDate">Carregando...</p>
+                </div>
+            </div>
+
+            <div class="attendance-card card">
+                <div class="attendance-icon" id="attendanceIcon">
+                    <span class="material-symbols-outlined">how_to_reg</span>
+                </div>
+                <h2 id="attendanceTitle">Marcar Presença</h2>
+                <p id="attendanceMessage">Ganhe +20 foguinhos por vir treinar hoje!</p>
+                
+                <button class="btn btn-primary btn-block" id="attendanceBtn" onclick="markAttendance()">
+                    Registrar Presença
+                </button>
+            </div>
+
+            <div class="attendance-stats">
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <div>
+                        <h3 id="monthAttendance">0</h3>
+                        <p>Este Mês</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="material-symbols-outlined">local_fire_department</span>
+                    <div>
+                        <h3 id="currentStreak">0</h3>
+                        <p>Sequência</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calendar-view card">
+                <h3>Histórico de Presença</h3>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Calendário será gerado aqui -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">home</span>
+            <span>Início</span>
+        </a>
+        <a href="workouts.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">fitness_center</span>
+            <span>Treinos</span>
+        </a>
+        <a href="store.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">storefront</span>
+            <span>Loja</span>
+        </a>
+        <a href="profile.html" class="bottom-nav-item">
+            <span class="material-symbols-outlined">person</span>
+            <span>Perfil</span>
+        </a>
+    </nav>
+
+    <script type="module">
+        import { checkAuth } from './js/auth.js';
+        import { getUserData, updateUserData } from './js/database.js';
+
+        let currentUser = null;
+        let hasMarkedToday = false;
+
+        checkAuth(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            currentUser = user;
+            initializePage();
+        });
+
+        async function initializePage() {
+            // Data atual
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = today.toLocaleDateString('pt-BR', options);
+
+            // Verificar se já marcou presença hoje
+            const userData = await getUserData(currentUser.uid);
+            if (userData.success) {
+                const lastAttendance = userData.data.lastAttendance;
+                const todayStr = today.toISOString().split('T')[0];
+
+                if (lastAttendance === todayStr) {
+                    hasMarkedToday = true;
+                    showAlreadyMarked();
+                }
+
+                // Atualizar estatísticas
+                document.getElementById('currentStreak').textContent = userData.data.streak || 0;
+                document.getElementById('monthAttendance').textContent = userData.data.monthAttendance || 0;
+            }
+
+            generateCalendar();
+        }
+
+        window.markAttendance = async function() {
+            if (hasMarkedToday) {
+                alert('Você já marcou presença hoje!');
+                return;
+            }
+
+            const userData = await getUserData(currentUser.uid);
+            if (userData.success) {
+                const data = userData.data;
+                const today = new Date().toISOString().split('T')[0];
+
+                await updateUserData(currentUser.uid, {
+                    foguinhos: (data.foguinhos || 0) + 20,
+                    lastAttendance: today,
+                    streak: (data.streak || 0) + 1,
+                    monthAttendance: (data.monthAttendance || 0) + 1
+                });
+
+                hasMarkedToday = true;
+                showSuccess();
+            }
+        }
+
+        function showSuccess() {
+            document.getElementById('attendanceIcon').innerHTML = '<span class="material-symbols-outlined" style="color: var(--primary);">check_circle</span>';
+            document.getElementById('attendanceTitle').textContent = 'Presença Registrada!';
+            document.getElementById('attendanceMessage').textContent = 'Você ganhou +20 foguinhos! 🔥';
+            document.getElementById('attendanceBtn').disabled = true;
+            document.getElementById('attendanceBtn').textContent = 'Presença Marcada';
+            document.getElementById('attendanceBtn').classList.add('btn-disabled');
+        }
+
+        function showAlreadyMarked() {
+            document.getElementById('attendanceIcon').innerHTML = '<span class="material-symbols-outlined" style="color: var(--primary);">check_circle</span>';
+            document.getElementById('attendanceTitle').textContent = 'Presença já marcada';
+            document.getElementById('attendanceMessage').textContent = 'Você já registrou sua presença hoje!';
+            document.getElementById('attendanceBtn').disabled = true;
+            document.getElementById('attendanceBtn').textContent = 'Já Marcado';
+            document.getElementById('attendanceBtn').classList.add('btn-disabled');
+        }
+
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            let html = '<div class="calendar-header">';
+            ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(day => {
+                html += `<div class="calendar-day-name">${day}</div>`;
+            });
+            html += '</div><div class="calendar-days">';
+
+            // Dias vazios antes do primeiro dia
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                html += '<div class="calendar-day empty"></div>';
+            }
+
+            // Dias do mês
+            for (let day = 1; day <= daysInMonth; day++) {
+                const isToday = day === today.getDate();
+                const isPast = day < today.getDate();
+                const marked = Math.random() > 0.5 && isPast; // Simulação
+
+                html += `
+                    <div class="calendar-day ${isToday ? 'today' : ''} ${marked ? 'marked' : ''}">
+                        ${day}
+                        ${marked ? '<span class="check-mark">✓</span>' : ''}
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            grid.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
