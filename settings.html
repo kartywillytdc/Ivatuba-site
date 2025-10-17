@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - FitApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="dark-theme">
+    <div class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <button class="btn btn-ghost" onclick="window.history.back()">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                </button>
+                <h1>Configurações</h1>
+            </div>
+
+            <div class="settings-section">
+                <h3>Conta</h3>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">person</span>
+                            <div>
+                                <h4>Editar Perfil</h4>
+                                <p>Nome, foto e informações</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">lock</span>
+                            <div>
+                                <h4>Alterar Senha</h4>
+                                <p>Atualize sua senha</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Aparência</h3>
+                <div class="settings-list">
+                    <div class="setting-item" onclick="window.location.href='settings-appearance.html'">
+                        <div>
+                            <span class="material-symbols-outlined">palette</span>
+                            <div>
+                                <h4>Tema</h4>
+                                <p>Escuro, Claro ou Automático</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Notificações</h3>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">notifications</span>
+                            <div>
+                                <h4>Notificações Push</h4>
+                                <p>Receba lembretes de treino</p>
+                            </div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">email</span>
+                            <div>
+                                <h4>Email</h4>
+                                <p>Novidades e promoções</p>
+                            </div>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Sobre</h3>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">info</span>
+                            <div>
+                                <h4>Versão</h4>
+                                <p>1.0.0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">description</span>
+                            <div>
+                                <h4>Termos de Uso</h4>
+                                <p>Leia nossos termos</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+
+                    <div class="setting-item">
+                        <div>
+                            <span class="material-symbols-outlined">privacy_tip</span>
+                            <div>
+                                <h4>Política de Privacidade</h4>
+                                <p>Como usamos seus dados</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <button class="btn btn-outline btn-block" style="color: #ff3b30; border-color: #ff3b30;" onclick="logout()">
+                    <span class="material-symbols-outlined">logout</span>
+                    Sair da Conta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { checkAuth, logoutUser } from './js/auth.js';
+
+        checkAuth((user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        window.logout = async function() {
+            if (confirm('Deseja realmente sair?')) {
+                await logoutUser();
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+</body>
+  </html>
